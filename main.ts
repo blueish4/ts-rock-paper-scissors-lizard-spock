@@ -1,8 +1,7 @@
-import { Game, MoveType } from "./rpsls"
+import { MoveType, Round } from "./rpsls"
 
-function strToMove(str : string) {
-    return MoveType.ROCK
-}
-let rpsls = new Game();
-console.log(rpsls.makeMove(MoveType.PAPER, MoveType.PAPER));
-console.log(rpsls.makeMove(MoveType.ROCK, MoveType.PAPER));
+
+let round = new Round(MoveType.ROCK, MoveType.PAPER);
+console.log(round.toString());
+let round2 = new Round(MoveType.ROCK, MoveType.ROCK);
+console.log(round2.toString())
