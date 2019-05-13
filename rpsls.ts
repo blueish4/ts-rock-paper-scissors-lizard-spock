@@ -5,15 +5,49 @@ export enum MoveType {
     LIZARD = "lizard",
     SPOCK = "spock",
 }
-enum Outcome {
+export enum Outcome {
     P1 = "player 1 wins",
     P2 = "player 2 wins",
     DRAW = "players draw",
     UK = "unknown",
 }
+interface isOver{
+    winner?: Outcome;
+    status: boolean;
+}
 export class Game {
     private score: [number, number];
-    constructor(goal: number) {}
+    private goal: number;
+    constructor(goal: number) {
+        this.goal = goal;
+        this.score = [0,0];
+    }
+    public runRound(playerMove: MoveType, opponentMove: MoveType) {
+        const r = new Round(playerMove, opponentMove);
+        switch (r.getOutcome()) {
+            case Outcome.P1:
+                this.score[0]++;
+                break;
+            case Outcome.P2:
+                this.score[1]++;
+                break;
+            default:
+                break;
+        }
+        return r;
+    }
+    public isOver() : isOver{
+        const status = this.score[0] === this.goal || this.score[1] === this.goal;
+        let retObj = {status: status}
+        if (status === true) {
+            if (this.score[0] > this.score[1]) {
+                retObj["winner"] = Outcome.P1;
+            } else {
+                retObj["winner"] = Outcome.P2;
+            }
+        }
+        return retObj;
+    }
 
 }
 export class Round {
