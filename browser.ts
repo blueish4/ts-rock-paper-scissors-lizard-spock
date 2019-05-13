@@ -17,7 +17,7 @@ function playRound(playerMove: MoveType){
     displayLine("> " + playerMove);
     const move = playerMove.toUpperCase();
     if (MoveType[move] != null){
-        
+        // Random object value selection from https://stackoverflow.com/a/2532251
         let count = 0;
         let cpuChoice = MoveType.SPOCK;
         for (const prop in MoveType) {
