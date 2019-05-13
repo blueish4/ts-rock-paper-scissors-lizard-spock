@@ -1,4 +1,4 @@
-import { MoveType, Round } from "./rpsls";
+import { MoveType, Outcome, Game } from "./rpsls";
 
 const inputbox = document.getElementById("input-box") as HTMLInputElement;
 document.addEventListener("keyup", e => {
@@ -11,14 +11,26 @@ document.getElementById("submit").addEventListener( "click", e => {
     playRound(<MoveType>inputbox.value)
     inputbox.value = ""
 })
+
+const game = new Game(5);
 function playRound(playerMove: MoveType){
     displayLine("> " + playerMove);
     const move = playerMove.toUpperCase();
     if (MoveType[move] != null){
-        const r = new Round(MoveType[move], MoveType.ROCK);
+        const r = game.runRound(MoveType[move], MoveType.ROCK);
         displayLine(r.toString())
     } else {
         displayLine("You fumble around for too long. You are eaten by a grue.")
+    }
+    const gameStatus = game.isOver()
+    if (gameStatus.status) {
+        displayLine("Well, I'm glad that's over.")
+        if (gameStatus.winner === Outcome.P1) {
+            displayLine("Drat! You won!");
+        } else {
+            displayLine("Muhahaha! You failed to defeat me!")
+            displayLine("Your enemy vanquises you.")
+        }
     }
 }
 function displayLine(line: string) {
