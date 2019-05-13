@@ -13,7 +13,8 @@ enum Outcome {
 }
 export class Game {
     private score: [number, number];
-    constructor() {}
+    constructor(goal: number) {}
+
 }
 export class Round {
     private outcome = Outcome.UK;
@@ -28,14 +29,14 @@ export class Round {
             this.verb       = "draws";
             this.outcome    = Outcome.DRAW;
         } else if (p1 === undefined && p2 != undefined) { // p2 wins
-            this.winnerType = p1Move;
+            this.winnerType = p2Move;
             this.verb       = p2[1];
-            this.loserType  = p2Move;
+            this.loserType  = p1Move;
             this.outcome    = Outcome.P2;
         } else if (p2 === undefined && p1 != undefined) { // p1 wins
-            this.winnerType = p2Move;
+            this.winnerType = p1Move;
             this.verb       = p1[1];
-            this.loserType  = p1Move;
+            this.loserType  = p2Move;
             this.outcome    = Outcome.P1;
         } else {
             this.outcome = Outcome.UK;
