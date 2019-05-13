@@ -9,21 +9,47 @@ enum Outcome {
     P1 = "player 1 wins",
     P2 = "player 2 wins",
     DRAW = "players draw",
+    UK = "unknown",
 }
 export class Game {
+    private score: [number, number];
     constructor() {}
-    public makeMove(player1: MoveType, player2: MoveType) {
-        const p1WinCondition = wins.get(player1);
-        const p1 = p1WinCondition.find((e) => {return e[0] === player2});
-        if (player1 === player2){
-            return Outcome.DRAW;
-        } else if (p1 === undefined) {
-            // p2 wins
-            return Outcome.P2;
+}
+export class Round {
+    private outcome = Outcome.UK;
+    private verb : string;
+    private winnerType: MoveType;
+    private loserType: MoveType; 
+    constructor(p1Move: MoveType, p2Move: MoveType) {
+        const p1 = wins.get(p1Move).find(e => {return e[0] === p2Move});
+        const p2 = wins.get(p2Move).find(e => {return e[0] === p1Move});
+        if (p1Move === p2Move){
+            this.winnerType = this.loserType = p1Move;
+            this.verb       = "draws";
+            this.outcome    = Outcome.DRAW;
+        } else if (p1 === undefined && p2 != undefined) { // p2 wins
+            this.winnerType = p1Move;
+            this.verb       = p2[1];
+            this.loserType  = p2Move;
+            this.outcome    = Outcome.P2;
+        } else if (p2 === undefined && p1 != undefined) { // p1 wins
+            this.winnerType = p2Move;
+            this.verb       = p1[1];
+            this.loserType  = p1Move;
+            this.outcome    = Outcome.P1;
         } else {
-            return Outcome.P1;
+            this.outcome = Outcome.UK;
         }
     }
+    public getOutcome() {
+        return this.outcome;
+    }
+    public toString() {
+        return `${this.outcome}. ${titleCase(this.winnerType)} ${this.verb} ${titleCase(this.loserType)}!`;
+    }
+}
+function titleCase(str: string) {
+    return str.charAt(0).toLocaleUpperCase() + str.slice(1);
 }
 const wins = new Map<MoveType, Array<[MoveType, string]>>();
 wins.set(MoveType.SCISSORS, [[MoveType.PAPER, "cuts"],
