@@ -3,6 +3,7 @@
         "target": "es6",
         "module": "commonjs",
         "sourceMap": true,
-        "outDir": "out"
+        "outDir": "out",
+        "lib": ["dom", "es6", "dom.iterable"]
     }
 }
